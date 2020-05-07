@@ -24,10 +24,9 @@ steps:
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)/publish_output"'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-
 
 - task: VSTest@2
   displayName: 'Run unit tests'
@@ -42,15 +41,6 @@ steps:
     searchFolder: '$(System.DefaultWorkingDirectory)'
     codeCoverageEnabled : true
 
-- task: ArchiveFiles@2
-  displayName: 'Archive files'
-  inputs:
-        rootFolderOrFile: '$(build.artifactStagingDirectory)/publish_output'
-        includeRootFolder: false
-        archiveType: zip
-        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-        replaceExistingArchive: true
-
-- publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+- publish: $(Build.ArtifactStagingDirectory)/*.zip
   artifact: drop
 
