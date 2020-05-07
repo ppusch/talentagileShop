@@ -42,6 +42,6 @@ steps:
     codeCoverageEnabled : true
   continueOnError: true
 
-- publish: $(Build.ArtifactStagingDirectory)/*.zip
+- publish: $(Build.ArtifactStagingDirectory)/TalentAgileShop.Web.zip
   artifact: drop
 
