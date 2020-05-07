@@ -40,6 +40,7 @@ steps:
         !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
     codeCoverageEnabled : true
+  continueOnError: true
 
 - publish: $(Build.ArtifactStagingDirectory)/*.zip
   artifact: drop
