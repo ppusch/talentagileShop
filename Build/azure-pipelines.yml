@@ -34,6 +34,7 @@ steps:
     SourceFolder: '$(Build.SourcesDirectory)'
     Contents: '**/*.dacpac'
     TargetFolder: '$(Build.ArtifactStagingDirectory)/SQL'
+    flattenFolders: true
     OverWrite: true
 
 - task: VSTest@2
