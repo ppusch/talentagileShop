@@ -40,7 +40,7 @@ steps:
 - task: CopyFiles@2
   displayName: Copy dacpac files to artifact staging directory
   inputs:
-    SourceFolder: '$(build.ArtifactStagingDirectory)'
+    SourceFolder: '$(build.SourcesDirectory)'
     Contents: '**/TalentAgileShop.Database.publish.xml'
     TargetFolder: '$(Build.ArtifactStagingDirectory)/SQL'
     flattenFolders: true
