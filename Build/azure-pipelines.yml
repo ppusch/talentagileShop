@@ -24,15 +24,24 @@ steps:
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.ArtifactStagingDirectory)"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
 - task: CopyFiles@2
   displayName: Copy dacpac files to artifact staging directory
   inputs:
-    SourceFolder: '$(Build.SourcesDirectory)'
+    SourceFolder: '$(build.ArtifactStagingDirectory)'
     Contents: '**/*.dacpac'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/SQL'
+    flattenFolders: true
+    OverWrite: true
+
+- task: CopyFiles@2
+  displayName: Copy dacpac files to artifact staging directory
+  inputs:
+    SourceFolder: '$(build.ArtifactStagingDirectory)'
+    Contents: '**/TalentAgileShop.Database.publish.xml'
     TargetFolder: '$(Build.ArtifactStagingDirectory)/SQL'
     flattenFolders: true
     OverWrite: true
@@ -53,10 +62,6 @@ steps:
 
 - publish: $(Build.ArtifactStagingDirectory)/TalentAgileShop.Web.zip
   artifact: Website
-
   
-- publish: $(Build.ArtifactStagingDirectory)/SQL/TalentAgileShop.Database.dacpac
+- publish: $(Build.ArtifactStagingDirectory)/SQL
   artifact: SQL
-
-  
-
