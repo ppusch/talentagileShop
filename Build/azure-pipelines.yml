@@ -29,6 +29,7 @@ steps:
     configuration: '$(buildConfiguration)'
 
 - task: CopyFiles@2
+  displayName: Copy dacpac files to artifact staging directory
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)'
     Contents: '**/*.dacpac'
@@ -50,5 +51,11 @@ steps:
   continueOnError: true
 
 - publish: $(Build.ArtifactStagingDirectory)/TalentAgileShop.Web.zip
-  artifact: drop
+  artifact: Website
+
+  
+- publish: $(Build.ArtifactStagingDirectory)/SQL/TalentAgileShop.Database.dacpac
+  artifact: SQL
+
+  
 
