@@ -33,7 +33,7 @@ steps:
   inputs:
     SourceFolder: '$(build.SourcesDirectory)'
     Contents: '**/*.dacpac'
-    TargetFolder: '$(Build.SourcesDirectory)/SQL'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/SQL'
     flattenFolders: true
     OverWrite: true
 
