@@ -31,9 +31,9 @@ steps:
 - task: CopyFiles@2
   displayName: Copy dacpac files to artifact staging directory
   inputs:
-    SourceFolder: '$(build.ArtifactStagingDirectory)'
+    SourceFolder: '$(build.SourcesDirectory)'
     Contents: '**/*.dacpac'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)/SQL'
+    TargetFolder: '$(Build.SourcesDirectory)/SQL'
     flattenFolders: true
     OverWrite: true
 
