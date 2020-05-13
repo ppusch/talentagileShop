@@ -24,7 +24,7 @@ steps:
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.ArtifactStagingDirectory)"'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.ArtifactStagingDirectory)\Web"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
@@ -60,7 +60,7 @@ steps:
     codeCoverageEnabled : true
   continueOnError: true
 
-- publish: $(Build.ArtifactStagingDirectory)/TalentAgileShop.Web.zip
+- publish: $(Build.ArtifactStagingDirectory)/$(build.ArtifactStagingDirectory)\Web
   artifact: Website
   
 - publish: $(Build.ArtifactStagingDirectory)/SQL
