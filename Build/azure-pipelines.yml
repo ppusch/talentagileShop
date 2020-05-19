@@ -13,7 +13,7 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  disable.coverage.autogenerate: 'true'
+  # disable.coverage.autogenerate: 'true'
 
 steps:
 - task: NuGetToolInstaller@1
@@ -58,9 +58,7 @@ steps:
         !**\*TestAdapter.dll
         !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
-    # codeCoverageEnabled : true
   continueOnError: true
-
 
 - task: PowerShell@2
   displayName: Generate Coverage xml files
@@ -87,7 +85,7 @@ steps:
             #`ngenerate report(s)"
             gci -Recurse | 
                 ?{ $_.Name -eq "coverage.cobertura.xml" } | 
-                %{ &"$pwd\reportgenerator.exe" "-reports:$($_.FullName)" "-targetdir:reports" "-reporttypes:"HtmlInline_AzurePipelines"" }
+                %{ &"$pwd\reportgenerator.exe" "-reports:$($_.FullName)" "-targetdir:reports" "-reporttypes:"HtmlInline"" }
 
 - task: PublishCodeCoverageResults@1
   inputs:
