@@ -117,7 +117,12 @@ steps:
   #     codeCoverageTool: 'Cobertura'
   #     summaryFileLocation: 
 
-
+- task: PublishCodeCoverageResults@1
+  inputs:
+    codeCoverageTool: 'Cobertura'
+    summaryFileLocation: '$(Agent.ArtifactStagingDirectory)\coverage.cobertura.xml'
+    reportDirectory: '$(Agent.ArtifactStagingDirectory)\reports'
+    
 - publish: $(Build.ArtifactStagingDirectory)/Web
   artifact: Website
   
