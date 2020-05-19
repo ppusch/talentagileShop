@@ -58,7 +58,7 @@ steps:
         !**\*TestAdapter.dll
         !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
-    codeCoverageEnabled : true
+    # codeCoverageEnabled : true
   continueOnError: true
 
 
@@ -88,35 +88,6 @@ steps:
             gci -Recurse | 
                 ?{ $_.Name -eq "coverage.cobertura.xml" } | 
                 %{ &"$pwd\reportgenerator.exe" "-reports:$($_.FullName)" "-targetdir:reports" "-reporttypes:"HtmlInline_AzurePipelines"" }
-
-
-# - task: PowerShell@2
-#   displayName: Generate Coverage xml files
-#   inputs:
-#     targetType: 'inline'
-#     workingDirectory: '$(Agent.TempDirectory)'
-#     script: |
-#               $ver = (Get-ChildItem $env:USERPROFILE\.nuget\packages\Microsoft.CodeCoverage | Select-Object -Property Name | Sort-Object -Descending | Select-Object -Last 1).Name
-#               "Version='$ver'"
-#               $PWD
-#               Get-ChildItem -Recurse -Filter "*.coverage" | % {
-#               $_.FullName
-#               $outfile = "$([System.IO.Path]::GetFileNameWithoutExtension($_.FullName)).coveragexml"
-#               $output = [System.IO.Path]::Combine([System.IO.Path]::GetDirectoryName($_.FullName), $outfile)
-#               "Analyze '$($_.FullName)' with output '$output'..."
-#               . $env:USERPROFILE\.nuget\packages\microsoft.codecoverage\$ver\build\netstandard1.0\CodeCoverage\CodeCoverage.exe analyze /output:$output $_.FullName
-#               }
-#               "Done"
-#     errorActionPreference: 'continue'
-
-# - script: reportgenerator -reports:$(Agent.TempDirectory)\**\*.coveragexml -targetdir:$(Build.SourcesDirectory)\Reports -reporttypes:"Cobertura;HTMLInline"
-#   displayName: Create Code Coverage Reports
-
-
-  # - task: PublishCodeCoverageResults@1
-  #   inputs:
-  #     codeCoverageTool: 'Cobertura'
-  #     summaryFileLocation: 
 
 - task: PublishCodeCoverageResults@1
   inputs:
