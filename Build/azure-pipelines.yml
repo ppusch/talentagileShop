@@ -86,7 +86,7 @@ steps:
             #`ngenerate report(s)"
             gci -Recurse | 
                 ?{ $_.Name -eq "coverage.cobertura.xml" } | 
-                %{ &"$pwd\reportgenerator.exe" "-reports:$($_.FullName)" "-targetdir:reports" "-reporttypes:"Cobertura;HTMLInline"" }
+                %{ &"$pwd\reportgenerator.exe" "-reports:$($_.FullName)" "-targetdir:reports" "-reporttypes:"Cobertura;HTMLInline" }
 
 
 # - task: PowerShell@2
