@@ -122,6 +122,7 @@ steps:
     codeCoverageTool: 'Cobertura'
     summaryFileLocation: '$(Build.ArtifactStagingDirectory)\coverage.cobertura.xml'
     reportDirectory: '$(Build.ArtifactStagingDirectory)\reports'
+    failIfCoverageEmpty: true
     
 - publish: $(Build.ArtifactStagingDirectory)/Web
   artifact: Website
