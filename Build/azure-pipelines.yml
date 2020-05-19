@@ -131,7 +131,4 @@ steps:
 - publish: $(Build.ArtifactStagingDirectory)/SQL
   artifact: SQL
 
-- publish: $(Build.ArtifactStagingDirectory)
-  artifact: Debug
-
   
