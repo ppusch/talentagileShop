@@ -65,7 +65,7 @@ steps:
   displayName: Generate Coverage xml files
   inputs:
     targetType: 'inline'
-    workingDirectory: '$(Agent.TempDirectory)'
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
     script: |
             #install tools:
             &dotnet tool install dotnet-reportgenerator-globaltool --tool-path . --version 4.0.12
@@ -75,7 +75,7 @@ steps:
             mkdir .\reports
 
             #`nrun tests:"
-            $unitTestFile = gci -Recurse | ?{ $_.FullName -like "*bin\*UnitTestProject2.dll" }
+            $unitTestFile = gci -Recurse | ?{ $_.FullName -like "*bin\*talentagileshop.cart.tests.dll" }
             Write-Host "`$unitTestFile value: $unitTestFile"
 
             $coverlet = "$pwd\coverlet.exe"
