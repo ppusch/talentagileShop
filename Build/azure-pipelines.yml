@@ -86,7 +86,7 @@ steps:
             #`ngenerate report(s)"
             gci -Recurse | 
                 ?{ $_.Name -eq "coverage.cobertura.xml" } | 
-                %{ &"$pwd\reportgenerator.exe" "-reports:$($_.FullName)" "-targetdir:reports" "-reporttypes:HTMLInline;HTMLChart" }
+                %{ &"$pwd\reportgenerator.exe" "-reports:$($_.FullName)" "-targetdir:reports" "-reporttypes:"Cobertura;HTMLInline"" }
 
 
 # - task: PowerShell@2
@@ -120,8 +120,8 @@ steps:
 - task: PublishCodeCoverageResults@1
   inputs:
     codeCoverageTool: 'Cobertura'
-    summaryFileLocation: '$(Build.SourcesDirectory)/coverage.cobertura.xml'
-    reportDirectory: '$(Build.SourcesDirectory)/reports'
+    summaryFileLocation: '$(Build.SourcesDirectory)\coverage.cobertura.xml'
+    reportDirectory: '$(Build.SourcesDirectory)\reports'
     failIfCoverageEmpty: false
     
 - publish: $(Build.ArtifactStagingDirectory)/Web
