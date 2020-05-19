@@ -65,7 +65,7 @@ steps:
   displayName: Generate Coverage xml files
   inputs:
     targetType: 'inline'
-    workingDirectory: '$(System.DefaultWorkingDirectory)'
+    workingDirectory: '$(Build.ArtifactStagingDirectory)'
     script: |
             #install tools:
             &dotnet tool install dotnet-reportgenerator-globaltool --tool-path . --version 4.0.12
@@ -120,12 +120,17 @@ steps:
 - task: PublishCodeCoverageResults@1
   inputs:
     codeCoverageTool: 'Cobertura'
-    summaryFileLocation: '$(Build.ArtifactStagingDirectory)\coverage.cobertura.xml'
-    reportDirectory: '$(Build.ArtifactStagingDirectory)\reports'
-    failIfCoverageEmpty: true
+    summaryFileLocation: '$(Build.ArtifactStagingDirectory)/coverage.cobertura.xml'
+    reportDirectory: '$(Build.ArtifactStagingDirectory)/reports'
+    failIfCoverageEmpty: false
     
 - publish: $(Build.ArtifactStagingDirectory)/Web
   artifact: Website
   
 - publish: $(Build.ArtifactStagingDirectory)/SQL
   artifact: SQL
+
+- publish: $(Build.ArtifactStagingDirectory)
+  artifact: Debug
+
+  
