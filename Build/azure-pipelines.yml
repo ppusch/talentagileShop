@@ -79,11 +79,12 @@ steps:
             Write-Host "`$unitTestFile value: $unitTestFile"
 
             $coverlet = "$pwd\coverlet.exe"
+            $reportgenerator = "$pwd\reportgenerator.exe"
 
             #calling $coverlet for $($unitTestFile.FullName)"
             &$coverlet $unitTestFile.FullName --target "dotnet" --targetargs "vstest $($unitTestFile.FullName) --logger:trx" --format "cobertura"
 
-            &reportgenerator.exe -reports:coverage.cobertura.xml -targetdir:reports -reporttypes:"HtmlInline_AzurePipelines;Cobertura;Sonarqube"
+            &$reportgenerator -reports:coverage.cobertura.xml -targetdir:reports -reporttypes:"HtmlInline_AzurePipelines;Cobertura;Sonarqube"
 
             # #`ngenerate report(s)"
             # gci -Recurse | 
