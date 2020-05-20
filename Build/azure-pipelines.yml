@@ -62,36 +62,30 @@ steps:
   continueOnError: true
 
 - task: PowerShell@2
-  displayName: Generate Coverage xml files
+  displayName: Generate Coverage Reports
   inputs:
     targetType: 'inline'
     workingDirectory: '$(System.DefaultWorkingDirectory)'
     script: |
-            #install tools:
             &dotnet tool install dotnet-reportgenerator-globaltool --tool-path . --version 4.0.12
             &dotnet tool install coverlet.console --tool-path . --version 1.4.1
 
-            #`nmake reports dir:"
+            $coverlet = "$pwd\coverlet.exe"
+            $reportgenerator = "$pwd\reportgenerator.exe"
+
             mkdir .\reports
 
-            #`nrun tests:"
             $unitTestFile = gci -Recurse | ?{ $_.FullName -like "*bin\*talentagileshop.cart.tests.dll" }
             Write-Host "`$unitTestFile value: $unitTestFile"
 
-            $coverlet = "$pwd\coverlet.exe"
-
-            #calling $coverlet for $($unitTestFile.FullName)"
             &$coverlet $unitTestFile.FullName --target "dotnet" --targetargs "vstest $($unitTestFile.FullName) --logger:trx" --format "cobertura"
 
-            #`ngenerate report(s)"
-            gci -Recurse | 
-                ?{ $_.Name -eq "coverage.cobertura.xml" } | 
-                %{ &"$pwd\reportgenerator.exe" "-reports:$($_.FullName)" "-targetdir:reports" "-reporttypes:"HtmlInline_AzurePipelines';'Cobertura';'SonarQube"" }
+            &$reportgenerator -reports:coverage.cobertura.xml -targetdir:reports -reporttypes:"HtmlInline_AzurePipelines;Cobertura;Sonarqube"
 
 - task: PublishCodeCoverageResults@1
   inputs:
     codeCoverageTool: 'Cobertura'
-    summaryFileLocation: '$(System.DefaultWorkingDirectory)\coverage.cobertura.xml'
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)\reports\Cobertura.xml'
     reportDirectory: '$(System.DefaultWorkingDirectory)\reports'
     pathToSources: '$(System.DefaultWorkingDirectory)'
     failIfCoverageEmpty: false
@@ -101,5 +95,3 @@ steps:
   
 - publish: $(Build.ArtifactStagingDirectory)/SQL
   artifact: SQL
-
-  
