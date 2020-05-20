@@ -83,10 +83,12 @@ steps:
             #calling $coverlet for $($unitTestFile.FullName)"
             &$coverlet $unitTestFile.FullName --target "dotnet" --targetargs "vstest $($unitTestFile.FullName) --logger:trx" --format "cobertura"
 
-            #`ngenerate report(s)"
-            gci -Recurse | 
-                ?{ $_.Name -eq "coverage.cobertura.xml" } | 
-                %{ &"$pwd\reportgenerator.exe" "-reports:$($_.FullName)" "-targetdir:reports" "-reporttypes:"HtmlInline_AzurePipelines\;Cobertura"" }
+            &reportgenerator.exe -reports:coverage.cobertura.xml -targetdir:reports -reporttypes:"HtmlInline_AzurePipelines;Cobertura;Sonarqube"
+
+            # #`ngenerate report(s)"
+            # gci -Recurse | 
+            #     ?{ $_.Name -eq "coverage.cobertura.xml" } | 
+            #     %{ &"$pwd\reportgenerator.exe" "-reports:$($_.FullName)" "-targetdir:reports" "-reporttypes:"HtmlInline_AzurePipelines\;Cobertura"" }
 
 - task: PublishCodeCoverageResults@1
   inputs:
