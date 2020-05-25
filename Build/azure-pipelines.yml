@@ -16,7 +16,7 @@ variables:
   disable.coverage.autogenerate: 'true'
   system.debug: 'true'
 
-  Version.MajorMinor: 1.0
+  Version.MajorMinor: 1.0.0
   Version.Revision: $[counter(variables['Version.MajorMinor'], 0)]
   Version.BuildNumber: $(Version.MajorMinor).$(Version.Revision)
 
