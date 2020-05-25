@@ -17,7 +17,7 @@ variables:
   system.debug: 'true'
 
 
-  Version.MajorMinorRevision: '1.0'
+  Version.MajorMinorRevision: '1.0.0'
   Version.Revision: $[counter(variables['Version.MajorMinorRevision'], 0)]
   Version.BuildNumber: '$(Version.MajorMinorRevision).$(Version.Revision)'
 
