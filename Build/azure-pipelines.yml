@@ -35,6 +35,11 @@ steps:
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
+
+- task: Npm@1
+  inputs:
+    command: 'custom'
+    customCommand: 'npm install -g typescript'
 - task: SonarCloudPrepare@1
   inputs:
     SonarCloud: 'SonarCloud TalentAgile'
@@ -42,6 +47,12 @@ steps:
     scannerMode: 'MSBuild'
     projectKey: 'TalentAgileShop'
     projectName: 'TalentAgileShop'
+    extraProperties: |
+          sonar.exclusions=**/obj/**,**/*.dll
+          sonar.branch.name=$(Build.SourceBranchName)
+          sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/**/coverage.cobertura.xml
+          sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)/*.trx
+
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
