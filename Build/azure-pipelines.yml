@@ -23,6 +23,15 @@ variables:
 
 steps:
 
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'SonarCloud TalentAgile'
+    organization: 'talentagile'
+    scannerMode: 'MSBuild'
+    projectKey: 'TalentAgileShop'
+    projectName: 'TalentAgileShop'
+
+
 - task: PowerShell@2
   displayName: Set assembly versions
   inputs:
@@ -95,6 +104,12 @@ steps:
 
             &$reportgenerator -reports:coverage.cobertura.xml -targetdir:reports -reporttypes:"HtmlInline_AzurePipelines;Cobertura;Sonarqube"
 
+
+- task: SonarCloudAnalyze@1
+- task: SonarCloudPublish@1
+  inputs:
+    pollingTimeoutSec: '300'
+
 - task: PublishCodeCoverageResults@1
   inputs:
     codeCoverageTool: 'Cobertura'
@@ -102,9 +117,10 @@ steps:
     reportDirectory: '$(System.DefaultWorkingDirectory)\reports'
     pathToSources: '$(System.DefaultWorkingDirectory)'
     failIfCoverageEmpty: false
-    
+
 - publish: $(Build.ArtifactStagingDirectory)/Web
   artifact: Website
   
 - publish: $(Build.ArtifactStagingDirectory)/SQL
   artifact: SQL
+
