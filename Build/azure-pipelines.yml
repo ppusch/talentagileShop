@@ -15,13 +15,57 @@ variables:
   buildConfiguration: 'Release'
   disable.coverage.autogenerate: 'true'
   system.debug: 'true'
+  NODE_PATH: '$(Build.SourcesDirectory)\node_modules'
+
+
+  Version.MajorMinorRevision: '1.0.0'
+  Version.Build: $[counter(variables['Version.MajorMinorRevision'], 0)]
+  Version.BuildNumber: '$(Version.MajorMinorRevision).$(Version.Build)'
 
 steps:
+
+- task: PowerShell@2
+  displayName: Set assembly versions
+  inputs:
+    filePath: '$(System.DefaultWorkingDirectory)/Build/ApplyVersionToAssemblies.ps1'
+    arguments: '-SourcesDirectory "$(Build.SourcesDirectory)" -BuildNumber "$(Version.BuildNumber)"'
+    pwsh: true
+
 - task: NuGetToolInstaller@1
 
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
+
+- task: Npm@1
+  inputs:
+    command: 'custom'
+    workingDir: $(Build.SourcesDirectory)
+    customCommand: 'install typescript'
+
+- task: PowerShell@2
+  displayName: Debug...
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your PowerShell commands here.
+      
+      npm typescript -v
+      echo $(NODE_PATH)
+      ls -r $(NODE_PATH)
+
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'SonarCloud TalentAgile'
+    organization: 'talentagile'
+    scannerMode: 'MSBuild'
+    projectKey: 'TalentAgileShop'
+    projectName: 'TalentAgileShop'
+    projectVersion: $(Version.BuildNumber)
+    extraProperties: |
+                sonar.inclusions=$(Build.SourcesDirectory)
+                sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/reports/SonarCube.xml
+                sonar.cs.vstest.reportsPaths=$(Build.SourcesDirectory)/TestResults/*.trx
 
 - task: VSBuild@1
   inputs:
@@ -82,6 +126,13 @@ steps:
 
             &$reportgenerator -reports:coverage.cobertura.xml -targetdir:reports -reporttypes:"HtmlInline_AzurePipelines;Cobertura;Sonarqube"
 
+
+- task: SonarCloudAnalyze@1
+
+- task: SonarCloudPublish@1
+  inputs:
+    pollingTimeoutSec: '300'
+
 - task: PublishCodeCoverageResults@1
   inputs:
     codeCoverageTool: 'Cobertura'
@@ -89,9 +140,10 @@ steps:
     reportDirectory: '$(System.DefaultWorkingDirectory)\reports'
     pathToSources: '$(System.DefaultWorkingDirectory)'
     failIfCoverageEmpty: false
-    
+
 - publish: $(Build.ArtifactStagingDirectory)/Web
   artifact: Website
   
 - publish: $(Build.ArtifactStagingDirectory)/SQL
   artifact: SQL
+
