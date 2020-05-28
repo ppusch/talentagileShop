@@ -15,7 +15,7 @@ variables:
   buildConfiguration: 'Release'
   disable.coverage.autogenerate: 'true'
   system.debug: 'true'
-  NODE_PATH: '$(SourcesDirectory)\node_modules'
+  NODE_PATH: '$(Build.SourcesDirectory)\node_modules'
 
 
   Version.MajorMinorRevision: '1.0.0'
@@ -23,6 +23,15 @@ variables:
   Version.BuildNumber: '$(Version.MajorMinorRevision).$(Version.Build)'
 
 steps:
+- task: PowerShell@2
+  displayName: Debug...
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your PowerShell commands here.
+      
+      npm typescript -v
+      echo $(NODE_PATH)
 
 - task: PowerShell@2
   displayName: Set assembly versions
@@ -41,6 +50,10 @@ steps:
   inputs:
     command: 'custom'
     customCommand: 'install -g typescript'
+
+
+
+
 
 - task: SonarCloudPrepare@1
   inputs:
