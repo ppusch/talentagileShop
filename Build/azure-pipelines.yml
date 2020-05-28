@@ -44,15 +44,12 @@ steps:
     customCommand: 'install typescript'
 
 - task: PowerShell@2
-  displayName: Debug...
+  displayName: Install JDK 11
   inputs:
     targetType: 'inline'
     script: |
-      # Write your PowerShell commands here.
-      
-      npm typescript -v
-      echo $(NODE_PATH)
-      ls -r $(NODE_PATH)
+      Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+      choco install jdk11
 
 - task: SonarCloudPrepare@1
   inputs:
