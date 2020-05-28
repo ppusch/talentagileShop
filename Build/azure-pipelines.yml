@@ -43,16 +43,17 @@ steps:
     workingDir: $(Build.SourcesDirectory)
     customCommand: 'install typescript'
 
-- task: PowerShell@2
-  displayName: Debug...
+- task: JavaToolInstaller@0
   inputs:
-    targetType: 'inline'
-    script: |
-      # Write your PowerShell commands here.
-      
-      npm typescript -v
-      echo $(NODE_PATH)
-      ls -r $(NODE_PATH)
+    versionSpec: '11'
+    jdkArchitectureOption: 'x64'
+    jdkSourceOption: 'AzureStorage'
+    azureResourceManagerEndpoint: 'Avanade_Ready'
+    azureStorageAccountName: 'talentagileshopstorage'
+    azureContainerName: 'resources'
+    azureCommonVirtualFile: 'jdk-11.0.7_windows-x64_bin.zip'
+    jdkDestinationDirectory: '/builds/binaries/externals'
+    cleanDestinationDirectory: true
 
 - task: SonarCloudPrepare@1
   inputs:
@@ -63,9 +64,10 @@ steps:
     projectName: 'TalentAgileShop'
     projectVersion: $(Version.BuildNumber)
     extraProperties: |
-                sonar.inclusions=$(Build.SourcesDirectory)
-                sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/reports/SonarCube.xml
+                sonar.inclusions=$(Build.SourcesDirectory)/Sources
+                sonar.coverageReportPaths=$(Build.SourcesDirectory)/reports/SonarCube.xml
                 sonar.cs.vstest.reportsPaths=$(Build.SourcesDirectory)/TestResults/*.trx
+                sonar.visualstudio.enable=true
 
 - task: VSBuild@1
   inputs:
@@ -126,12 +128,7 @@ steps:
 
             &$reportgenerator -reports:coverage.cobertura.xml -targetdir:reports -reporttypes:"HtmlInline_AzurePipelines;Cobertura;Sonarqube"
 
-
 - task: SonarCloudAnalyze@1
-
-- task: SonarCloudPublish@1
-  inputs:
-    pollingTimeoutSec: '300'
 
 - task: PublishCodeCoverageResults@1
   inputs:
@@ -141,9 +138,12 @@ steps:
     pathToSources: '$(System.DefaultWorkingDirectory)'
     failIfCoverageEmpty: false
 
+- task: SonarCloudPublish@1
+  inputs:
+    pollingTimeoutSec: '300'
+
 - publish: $(Build.ArtifactStagingDirectory)/Web
   artifact: Website
   
 - publish: $(Build.ArtifactStagingDirectory)/SQL
   artifact: SQL
-
