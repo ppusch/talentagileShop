@@ -15,6 +15,7 @@ variables:
   buildConfiguration: 'Release'
   disable.coverage.autogenerate: 'true'
   system.debug: 'true'
+  NODE_PATH: '$(SourcesDirectory)\node_modules'
 
 
   Version.MajorMinorRevision: '1.0.0'
