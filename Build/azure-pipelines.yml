@@ -40,6 +40,7 @@ steps:
   inputs:
     command: 'custom'
     customCommand: 'npm install -g typescript'
+    
 - task: SonarCloudPrepare@1
   inputs:
     SonarCloud: 'SonarCloud TalentAgile'
@@ -114,6 +115,7 @@ steps:
 
 
 - task: SonarCloudAnalyze@1
+
 - task: SonarCloudPublish@1
   inputs:
     pollingTimeoutSec: '300'
