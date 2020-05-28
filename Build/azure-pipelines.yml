@@ -64,7 +64,6 @@ steps:
     projectName: 'TalentAgileShop'
     projectVersion: $(Version.BuildNumber)
     extraProperties: |
-                sonar.inclusions=$(Build.SourcesDirectory)/Sources
                 sonar.coverageReportPaths=$(Build.SourcesDirectory)/reports/SonarCube.xml
                 sonar.cs.vstest.reportsPaths=$(Build.SourcesDirectory)/TestResults/*.trx
                 sonar.visualstudio.enable=true
