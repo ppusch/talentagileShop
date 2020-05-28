@@ -36,11 +36,11 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
-- task: Npm@1
-  inputs:
-    command: 'custom'
-    customCommand: 'npm install -g typescript'
-    
+# - task: Npm@1
+#   inputs:
+#     command: 'custom'
+#     customCommand: 'npm install -g typescript'
+
 - task: SonarCloudPrepare@1
   inputs:
     SonarCloud: 'SonarCloud TalentAgile'
