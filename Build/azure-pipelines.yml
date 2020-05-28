@@ -54,7 +54,6 @@ steps:
       echo $(NODE_PATH)
       ls -r $(NODE_PATH)
 
-
 - task: SonarCloudPrepare@1
   inputs:
     SonarCloud: 'SonarCloud TalentAgile'
@@ -62,9 +61,11 @@ steps:
     scannerMode: 'MSBuild'
     projectKey: 'TalentAgileShop'
     projectName: 'TalentAgileShop'
+    projectVersion: $(Version.BuildNumber)
     extraProperties: |
-                sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)\reports\SonarCube.xml
-                sonar.cs.vstest.reportsPaths=$(Build.SourcesDirectory)\TestResults\*.trx
+                sonar.sources='$(Build.SourcesDirectory)'
+                sonar.cs.opencover.reportsPaths='$(Build.SourcesDirectory)\reports\SonarCube.xml'
+                sonar.cs.vstest.reportsPaths='$(Build.SourcesDirectory)\TestResults\*.trx'
 
 - task: VSBuild@1
   inputs:
