@@ -136,12 +136,7 @@ steps:
 
             &$reportgenerator -reports:coverage.cobertura.xml -targetdir:reports -reporttypes:"HtmlInline_AzurePipelines;Cobertura;Sonarqube"
 
-
 - task: SonarCloudAnalyze@1
-
-- task: SonarCloudPublish@1
-  inputs:
-    pollingTimeoutSec: '300'
 
 - task: PublishCodeCoverageResults@1
   inputs:
@@ -150,6 +145,10 @@ steps:
     reportDirectory: '$(System.DefaultWorkingDirectory)\reports'
     pathToSources: '$(System.DefaultWorkingDirectory)'
     failIfCoverageEmpty: false
+
+- task: SonarCloudPublish@1
+  inputs:
+    pollingTimeoutSec: '300'
 
 - publish: $(Build.ArtifactStagingDirectory)/Web
   artifact: Website
