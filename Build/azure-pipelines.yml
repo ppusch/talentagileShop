@@ -69,8 +69,8 @@ steps:
     SonarCloud: 'SonarCloud TalentAgile'
     organization: 'talentagile'
     scannerMode: 'MSBuild'
-    projectKey: 'TalentAgileShop'
-    projectName: 'TalentAgileShop'
+    projectKey: 'TalentAgileShopWeb'
+    projectName: 'TalentAgileShopWeb'
     projectVersion: $(Version.BuildNumber)
     extraProperties: |
                 sonar.inclusions=$(Build.SourcesDirectory)/Sources
