@@ -30,9 +30,6 @@ steps:
     arguments: '-SourcesDirectory "$(Build.SourcesDirectory)" -BuildNumber "$(Version.BuildNumber)"'
     pwsh: true
 
-
-
-
 - task: NuGetToolInstaller@1
 
 - task: NuGetCommand@2
@@ -42,7 +39,7 @@ steps:
 - task: Npm@1
   inputs:
     command: 'custom'
-    customCommand: 'npm install -g typescript'
+    customCommand: 'install typescript'
 
 - task: SonarCloudPrepare@1
   inputs:
