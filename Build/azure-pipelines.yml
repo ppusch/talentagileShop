@@ -23,15 +23,6 @@ variables:
   Version.BuildNumber: '$(Version.MajorMinorRevision).$(Version.Build)'
 
 steps:
-- task: PowerShell@2
-  displayName: Debug...
-  inputs:
-    targetType: 'inline'
-    script: |
-      # Write your PowerShell commands here.
-      
-      npm typescript -v
-      echo $(NODE_PATH)
 
 - task: PowerShell@2
   displayName: Set assembly versions
@@ -49,10 +40,19 @@ steps:
 - task: Npm@1
   inputs:
     command: 'custom'
-    customCommand: 'install -g typescript'
+    workingDir: $(Build.SourcesDirectory)
+    customCommand: 'install typescript'
 
-
-
+- task: PowerShell@2
+  displayName: Debug...
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your PowerShell commands here.
+      
+      npm typescript -v
+      echo $(NODE_PATH)
+      ls -r $(NODE_PATH)
 
 
 - task: SonarCloudPrepare@1
