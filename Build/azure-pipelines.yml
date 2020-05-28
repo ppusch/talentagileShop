@@ -63,9 +63,9 @@ steps:
     projectName: 'TalentAgileShop'
     projectVersion: $(Version.BuildNumber)
     extraProperties: |
-                sonar.sources='$(Build.SourcesDirectory)'
-                sonar.cs.opencover.reportsPaths='$(Build.SourcesDirectory)\reports\SonarCube.xml'
-                sonar.cs.vstest.reportsPaths='$(Build.SourcesDirectory)\TestResults\*.trx'
+                sonar.sources=$(Build.SourcesDirectory)
+                sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/reports/SonarCube.xml
+                sonar.cs.vstest.reportsPaths=$(Build.SourcesDirectory)/TestResults/*.trx
 
 - task: VSBuild@1
   inputs:
