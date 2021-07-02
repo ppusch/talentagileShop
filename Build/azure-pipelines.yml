@@ -140,6 +140,7 @@ steps:
     failIfCoverageEmpty: false
 
 - task: SonarCloudPublish@1
+  condition: false
   inputs:
     pollingTimeoutSec: '300'
 
