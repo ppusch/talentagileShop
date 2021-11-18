@@ -56,6 +56,7 @@ steps:
     cleanDestinationDirectory: true
 
 - task: SonarCloudPrepare@1
+  condition: false
   inputs:
     SonarCloud: 'SonarCloud TalentAgile'
     organization: 'talentagile'
@@ -128,6 +129,7 @@ steps:
             &$reportgenerator -reports:coverage.cobertura.xml -targetdir:reports -reporttypes:"HtmlInline_AzurePipelines;Cobertura;Sonarqube"
 
 - task: SonarCloudAnalyze@1
+  condition: false
 
 - task: PublishCodeCoverageResults@1
   inputs:
@@ -138,6 +140,7 @@ steps:
     failIfCoverageEmpty: false
 
 - task: SonarCloudPublish@1
+  condition: false
   inputs:
     pollingTimeoutSec: '300'
 
